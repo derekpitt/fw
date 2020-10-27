@@ -136,9 +136,9 @@ export class Network {
       //});
 
       p.addEventListener("loadend", e => {
-        const { response, status } = p;
+        const { response, status, responseType } = p;
 
-        const parsedRes = parseResponse(response);
+        const parsedRes = responseType == 'json'? parseResponse(response): response;
 
         // build context;
         const responseContext: ResponseContext = new AResponseContext(
