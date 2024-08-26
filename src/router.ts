@@ -1,7 +1,7 @@
-import { kebab } from "./util";
-import { ContainerInstance, makerOf } from "./container";
-import { ViewEngine, makeVueComponent } from "./view-engine";
-import { Bus } from "./bus";
+import { kebab } from "./util.js";
+import { ContainerInstance, makerOf } from "./container.js";
+import { ViewEngine, makeVueComponent } from "./view-engine.js";
+import { Bus } from "./bus.js";
 
 import Vue from "vue";
 
@@ -331,7 +331,7 @@ export class ViewRouter {
     loadedView: LoadedView,
     viewStackIndex: number,
   ) {
-    if (loadedView.router == null) return;
+    if (!(loadedView && loadedView.router)) return;
     loadedView.router.fullLocation = fullLocation;
 
     let match = loadedView.router.matches(location);
@@ -390,6 +390,10 @@ export class ViewRouter {
       loadedView.vueInstance,
       Object.assign({}, match.route.data, queryParams, match.params),
     );
+
+    if (!newElement?.router) {
+      return;
+    }
 
     this.loadedViewsStack.push({
       matchedOn: match.matchedOn,
